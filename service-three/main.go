@@ -1,16 +1,19 @@
 package main
 
 import (
-    "fmt"
+    // "fmt"
     "log"
     "net/http"
 )
 
-func homePage(w http.ResponseWriter, r *http.Request){
-    fmt.Fprintf(w, "Welcome to the Service 3!")
+func homePage(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "static/index.html")
 }
 
 func handleRequests() {
+    // Melayani aset statis seperti CSS, JS, dan gambar
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
     http.HandleFunc("/", homePage)
     log.Fatal(http.ListenAndServe(":8082", nil))
 }
